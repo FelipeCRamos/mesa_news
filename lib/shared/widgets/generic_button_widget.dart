@@ -25,41 +25,43 @@ class GenericButton extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: InkWell(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: variant == ButtonVariant.dark ||
-                          variant == ButtonVariant.outlineDark
-                      ? const Color(0xFF010A53)
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  border: variant == ButtonVariant.outlineDark ||
-                          variant == ButtonVariant.outlineLight
-                      ? Border.all(
-                          color: variant == ButtonVariant.outlineLight
-                              ? const Color(0xFF010A53)
-                              : Colors.white,
-                        )
-                      : null,
-                ),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 13,
-                ),
-                child: Align(
-                  child: Text(
-                    title,
-                    style: GoogleFonts.roboto(
-                      color: variant == ButtonVariant.light ||
-                              variant == ButtonVariant.outlineLight
-                          ? const Color(0xFF010A53)
-                          : Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
+            child: Material(
+              color: variant == ButtonVariant.dark ||
+                      variant == ButtonVariant.outlineDark
+                  ? const Color(0xFF010A53)
+                  : Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(5),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: variant == ButtonVariant.outlineDark ||
+                            variant == ButtonVariant.outlineLight
+                        ? Border.all(
+                            color: variant == ButtonVariant.outlineLight
+                                ? const Color(0xFF010A53)
+                                : Colors.white,
+                          )
+                        : null,
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 13),
+                  child: Align(
+                    child: Text(
+                      title,
+                      style: GoogleFonts.roboto(
+                        color: variant == ButtonVariant.light ||
+                                variant == ButtonVariant.outlineLight
+                            ? const Color(0xFF010A53)
+                            : Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
+                onTap: onPressed,
               ),
-              onTap: onPressed,
             ),
           ),
         )

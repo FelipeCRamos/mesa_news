@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mesa_news/modules/login_module/pages/login_initial.page.dart';
+import 'package:mesa_news/modules/login_module/pages/login_sign_in.page.dart';
 
 void main() {
   runApp(MesaApp());
@@ -15,7 +15,7 @@ class MesaApp extends StatelessWidget {
         primaryColor: const Color(0xFFE5E5E5),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginInitialPage(),
+      home: LoginSignInPage(),
     );
   }
 }

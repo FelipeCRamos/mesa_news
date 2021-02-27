@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mesa_news/modules/login_module/shared/not_have_account_signup_widget.dart';
 import 'package:mesa_news/shared/widgets/generic_button_widget.dart';
 
 class LoginInitialPage extends StatelessWidget {
@@ -37,31 +38,7 @@ class LoginInitialPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 40, bottom: 32),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Não tenho conta.',
-                        style: GoogleFonts.roboto(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      InkWell(
-                        onTap: _doSignUp,
-                        child: Text(
-                          'Cadastrar',
-                          style: GoogleFonts.roboto(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xFF00B2FF),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: NotHaveAccountSignup(onTap: _doSignUp),
                 ),
               ],
             ),
