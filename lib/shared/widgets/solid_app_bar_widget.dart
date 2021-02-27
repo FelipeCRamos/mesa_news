@@ -15,6 +15,7 @@ class SolidAppBar extends AppBar {
               color: Colors.white,
             ),
           ),
+          brightness: Brightness.dark,
           leading: IconButton(
             icon: const Icon(
               Icons.close,

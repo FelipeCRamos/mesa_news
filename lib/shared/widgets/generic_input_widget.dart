@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GenericInput extends StatelessWidget {
@@ -12,6 +13,7 @@ class GenericInput extends StatelessWidget {
     this.onFieldSubmitted,
     this.textInputAction,
     this.obscure = false,
+    this.inputFormatters,
   }) : super(key: key);
 
   final String title;
@@ -23,6 +25,7 @@ class GenericInput extends StatelessWidget {
   final String Function(String) validator;
   final TextInputAction textInputAction;
   final bool obscure;
+  final List<TextInputFormatter> inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +52,7 @@ class GenericInput extends StatelessWidget {
               obscureText: obscure,
               textInputAction: textInputAction,
               onFieldSubmitted: onFieldSubmitted,
+              inputFormatters: inputFormatters,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: const InputDecoration(
                 filled: true,
