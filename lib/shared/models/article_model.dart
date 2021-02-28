@@ -24,7 +24,7 @@ class ArticleModel {
   final String author;
 
   @JsonKey(name: 'published_at')
-  final String publishedAt;
+  final DateTime publishedAt;
 
   final bool highlight;
   final String url;
