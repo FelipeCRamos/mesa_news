@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mesa_news/core/masks.dart';
 import 'package:mesa_news/core/validators.dart';
+import 'package:mesa_news/modules/login_module/blocs/login_bloc.dart';
+import 'package:mesa_news/modules/login_module/blocs/login_bloc_events.dart';
 import 'package:mesa_news/shared/widgets/generic_button_widget.dart';
 import 'package:mesa_news/shared/widgets/generic_input_widget.dart';
 import 'package:mesa_news/shared/widgets/solid_app_bar_widget.dart';
 
 class LoginSignUpPage extends StatelessWidget {
+
+  LoginSignUpPage({this.bloc});
+
+  final LoginBloc bloc;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
@@ -73,7 +81,7 @@ class LoginSignUpPage extends StatelessWidget {
             GenericButton(
               title: 'Cadastrar',
               variant: ButtonVariant.dark,
-              onPressed: _signUp,
+              onPressed: () => _signUp(),
             ),
           ],
         ),
@@ -82,7 +90,15 @@ class LoginSignUpPage extends StatelessWidget {
   }
 
   void _signUp() {
-    _formKey.currentState.validate();
-    // TODO...
+    if (_formKey.currentState.validate() || _passwordController.text == _repeatPasswordController.text) {
+      bloc.add(
+        LoginBlocEventSignUp(
+          password: _passwordController.text,
+          birthDate: _birthDateController.text,
+          name: _nameController.text,
+          email: _emailController.text,
+        ),
+      );
+    }
   }
 }

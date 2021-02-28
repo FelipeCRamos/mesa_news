@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mesa_news/modules/login_module/blocs/login_bloc.dart';
+import 'package:mesa_news/modules/login_module/pages/login_sign_up.page.dart';
 import 'package:mesa_news/modules/login_module/shared/not_have_account_signup_widget.dart';
 import 'package:mesa_news/shared/widgets/generic_button_widget.dart';
 import 'package:mesa_news/shared/widgets/generic_input_widget.dart';
@@ -7,15 +9,24 @@ import 'package:mesa_news/shared/widgets/solid_app_bar_widget.dart';
 import 'package:mesa_news/core/validators.dart';
 
 class LoginSignInPage extends StatelessWidget {
+  LoginSignInPage({
+    Key key,
+    @required this.bloc,
+  }) : super(key: key);
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final LoginBloc bloc;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: SolidAppBar(title: 'Entrar com e-mail'),
+      appBar: SolidAppBar(
+        title: 'Entrar com e-mail',
+        onCancel: () => Navigator.of(context).pop(),
+      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraint) =>
@@ -71,7 +82,7 @@ class LoginSignInPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 32),
                         child: NotHaveAccountSignup(
-                          onTap: _doSignUp,
+                          onTap: () => _doSignUp(context),
                           whiteBackground: true,
                         ),
                       ),
@@ -90,8 +101,12 @@ class LoginSignInPage extends StatelessWidget {
     // TODO
   }
 
-  void _doSignUp() {
-    // TODO
+  void _doSignUp(BuildContext context) {
+    Navigator.of(context).push<LoginSignUpPage>(
+      MaterialPageRoute<LoginSignUpPage>(
+        builder: (BuildContext _) => LoginSignUpPage(bloc: bloc),
+      ),
+    );
   }
 
   void _login() {

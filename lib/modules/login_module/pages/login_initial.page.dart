@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:mesa_news/modules/login_module/blocs/login_bloc.dart';
+import 'package:mesa_news/modules/login_module/pages/login_sign_in.page.dart';
+import 'package:mesa_news/modules/login_module/pages/login_sign_up.page.dart';
 import 'package:mesa_news/modules/login_module/shared/not_have_account_signup_widget.dart';
 import 'package:mesa_news/shared/widgets/generic_button_widget.dart';
 
 class LoginInitialPage extends StatelessWidget {
+  const LoginInitialPage({
+    Key key,
+    @required this.bloc,
+  }) : super(key: key);
+
+  final LoginBloc bloc;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +44,11 @@ class LoginInitialPage extends StatelessWidget {
                 GenericButton(
                   title: 'Entrar com e-mail',
                   variant: ButtonVariant.outlineDark,
-                  onPressed: _doSignInWithEmail,
+                  onPressed: () => _doSignInWithEmail(context),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 40, bottom: 32),
-                  child: NotHaveAccountSignup(onTap: _doSignUp),
+                  child: NotHaveAccountSignup(onTap: () => _doSignUp(context)),
                 ),
               ],
             ),
@@ -48,12 +58,22 @@ class LoginInitialPage extends StatelessWidget {
     );
   }
 
-  void _doSignUp() {
-    // TODO
+  void _doSignUp(BuildContext ctx) {
+    Navigator.of(ctx).push<LoginSignUpPage>(
+      MaterialPageRoute<LoginSignUpPage>(
+        builder: (BuildContext _) => LoginSignUpPage(
+          bloc: BlocProvider.of<LoginBloc>(ctx),
+        ),
+      ),
+    );
   }
 
-  void _doSignInWithEmail() {
-    // TODO
+  void _doSignInWithEmail(BuildContext context) {
+    Navigator.of(context).push<LoginSignInPage>(
+      MaterialPageRoute<LoginSignInPage>(
+        builder: (BuildContext _) => LoginSignInPage(bloc: bloc),
+      ),
+    );
   }
 
   void _doSignInWithFacebook() {
