@@ -13,4 +13,12 @@ class HomeBlocEventHighlight implements HomeBlocEvent {
   final ArticleModel article;
 }
 
-class HomeBlocEventOpen implements HomeBlocEvent {}
+class HomeBlocEventFilter implements HomeBlocEvent {
+  const HomeBlocEventFilter({
+    @required this.time,
+    @required this.onlyHighlighted,
+  });
+
+  final List<DateTime> time;
+  final bool onlyHighlighted;
+}

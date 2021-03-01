@@ -65,6 +65,33 @@ class HomeBloc extends Bloc<HomeBlocEvent, HomeBlocState> {
         }
         break;
 
+      case HomeBlocEventFilter:
+        final HomeBlocEventFilter eventFilter = event as HomeBlocEventFilter;
+        try {
+          HomeBlocStateLoaded(
+            highlights: highlights,
+            articles: articles.where((ArticleModel model) {
+              if (eventFilter.onlyHighlighted) {
+                return model.highlight || userHighlighted.contains(model);
+              } else if (eventFilter.time.isNotEmpty) {
+                return model.publishedAt.isAfter(eventFilter.time.first) &&
+                    model.publishedAt.isBefore(eventFilter.time.last);
+              }
+              return false;
+            }).toList(),
+            highlightedArticles: userHighlighted,
+          );
+        } catch (e) {
+          if (e is DioError) {
+            Catcher.reportCheckedError(
+                e.response.data['message'] ?? e.message, null);
+            yield HomeBlocStateError();
+          } else {
+            rethrow;
+          }
+        }
+        break;
+
       case HomeBlocEventHighlight:
         if (userHighlighted
             .contains((event as HomeBlocEventHighlight).article)) {
@@ -79,9 +106,6 @@ class HomeBloc extends Bloc<HomeBlocEvent, HomeBlocState> {
           highlightedArticles: userHighlighted,
         );
         break;
-
-      case HomeBlocEventOpen:
-      // TODO: Open article
     }
   }
 }

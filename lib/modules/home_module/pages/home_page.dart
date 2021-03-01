@@ -8,10 +8,11 @@ import 'package:mesa_news/shared/models/article_model.dart';
 import 'package:mesa_news/shared/widgets/generic_button_widget.dart';
 import 'package:mesa_news/shared/widgets/solid_app_bar_widget.dart';
 
+import 'home_filter_page.dart';
 import 'news_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({
+  HomePage({
     Key key,
     this.highlights = const <ArticleModel>[],
     this.lastNews = const <ArticleModel>[],
@@ -23,16 +24,20 @@ class HomePage extends StatelessWidget {
   final List<ArticleModel> lastNews;
   final List<ArticleModel> userHighlighted;
   final bool initialLoading;
+  HomeBloc bloc;
 
   @override
   Widget build(BuildContext context) {
+    bloc = BlocProvider.of<HomeBloc>(context);
+
+
     return Scaffold(
       appBar: SolidAppBar(
         title: 'Mesa News',
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.filter_list, color: Colors.white),
-            onPressed: _openFilterPage,
+            onPressed: () => _openFilterPage(context),
           ),
         ],
       ),
@@ -274,5 +279,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _openFilterPage() {}
+  void _openFilterPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<HomeFilterPage>(
+        builder: (BuildContext context) => HomeFilterPage(
+          bloc: bloc,
+        ),
+      ),
+    );
+  }
 }
