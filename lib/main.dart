@@ -1,10 +1,34 @@
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
-import 'package:mesa_news/modules/home_module/pages/home_page.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mesa_news/core/auth.dart';
 import 'package:mesa_news/modules/login_module/login_provider.dart';
-import 'package:mesa_news/shared/models/article_model.dart';
 
 void main() {
-  runApp(MesaApp());
+  // register singletons
+  GetIt.instance.registerSingleton(
+    Auth(),
+    signalsReady: true,
+  );
+
+  final CatcherOptions options = CatcherOptions(
+    SilentReportMode(),
+    <ReportHandler>[
+      ConsoleHandler(
+        enableDeviceParameters: false,
+        enableApplicationParameters: false,
+      ),
+      ToastHandler(
+        length: ToastHandlerLength.short,
+      ),
+    ],
+  );
+
+  Catcher(
+    rootWidget: MesaApp(),
+    debugConfig: options,
+  );
+
 }
 
 class MesaApp extends StatelessWidget {
@@ -17,115 +41,8 @@ class MesaApp extends StatelessWidget {
         primaryColor: const Color(0xFFE5E5E5),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      navigatorKey: Catcher.navigatorKey,
       home: LoginProvider(),
-      /*
-      home: HomePage(
-        lastNews: <ArticleModel>[
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: false,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii esse eh um bem grande entao se prepara ai poq vou testar os limites dessa bagaca eh nois cuzao ihaaaaa prog na veiaaaa',
-          ),
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: false,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii',
-          ),
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: false,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii',
-          ),
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: false,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii',
-          ),
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: false,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii',
-          ),
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: false,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii',
-          ),
-        ],
-        highlights: <ArticleModel>[
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: true,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii esse eh um bem grande entao se prepara ai poq vou testar os limites dessa bagaca eh nois cuzao ihaaaaa prog na veiaaaa',
-          ),
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: true,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii',
-          ),
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: true,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii',
-          ),
-          ArticleModel(
-            content: 'teste teste teste teste',
-            url: 'url teste',
-            publishedAt: DateTime.now().subtract(const Duration(hours: 15)),
-            highlight: true,
-            description: 'descricao teste t4este teste',
-            imageUrl: 'httpsasjkdnakj',
-            author: 'autor',
-            title: 'TITULO Aquiiii',
-          ),
-        ],
-      ),
-      */
     );
   }
 }

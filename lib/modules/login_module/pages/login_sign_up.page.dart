@@ -5,12 +5,12 @@ import 'package:mesa_news/core/masks.dart';
 import 'package:mesa_news/core/validators.dart';
 import 'package:mesa_news/modules/login_module/blocs/login_bloc.dart';
 import 'package:mesa_news/modules/login_module/blocs/login_bloc_events.dart';
+import 'package:mesa_news/modules/login_module/blocs/login_bloc_states.dart';
 import 'package:mesa_news/shared/widgets/generic_button_widget.dart';
 import 'package:mesa_news/shared/widgets/generic_input_widget.dart';
 import 'package:mesa_news/shared/widgets/solid_app_bar_widget.dart';
 
 class LoginSignUpPage extends StatelessWidget {
-
   LoginSignUpPage({this.bloc});
 
   final LoginBloc bloc;
@@ -33,64 +33,77 @@ class LoginSignUpPage extends StatelessWidget {
         title: 'Cadastrar',
         onCancel: () => Navigator.of(context).pop(),
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          children: <Widget>[
-            GenericInput(
-              title: 'Nome',
-              controller: _nameController,
-              textInputAction: TextInputAction.next,
+      body: BlocBuilder<LoginBloc, LoginBlocState>(
+        cubit: bloc,
+        builder: (BuildContext context, LoginBlocState state) {
+          final bool isLoading = state is LoginBlocStateLoading;
+          return Form(
+            key: _formKey,
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              children: <Widget>[
+                GenericInput(
+                  title: 'Nome',
+                  controller: _nameController,
+                  enabled: !isLoading,
+                  textInputAction: TextInputAction.next,
+                ),
+                separator,
+                GenericInput(
+                  title: 'E-mail',
+                  controller: _emailController,
+                  enabled: !isLoading,
+                  textInputAction: TextInputAction.next,
+                  validator: Validators.emailValidator,
+                ),
+                separator,
+                GenericInput(
+                  title: 'Senha',
+                  controller: _passwordController,
+                  enabled: !isLoading,
+                  textInputAction: TextInputAction.next,
+                  obscure: true,
+                  validator: Validators.passwordValidator,
+                ),
+                separator,
+                GenericInput(
+                  title: 'Confirmar senha',
+                  controller: _repeatPasswordController,
+                  textInputAction: TextInputAction.next,
+                  enabled: !isLoading,
+                  obscure: true,
+                  validator: Validators.passwordValidator,
+                ),
+                separator,
+                GenericInput(
+                  title: 'Data de nascimento - opcional',
+                  controller: _birthDateController,
+                  inputType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  // validator: Validators.dateValidator,
+                  enabled: !isLoading,
+                  inputFormatters: <TextInputFormatter>[Masks.date()],
+                  onFieldSubmitted: (String _) => _signUp(),
+                ),
+                separator,
+                GenericButton(
+                  title: 'Cadastrar',
+                  isLoading: isLoading,
+                  variant: ButtonVariant.dark,
+                  onPressed: () => _signUp(),
+                ),
+              ],
             ),
-            separator,
-            GenericInput(
-              title: 'E-mail',
-              controller: _emailController,
-              textInputAction: TextInputAction.next,
-              validator: Validators.emailValidator,
-            ),
-            separator,
-            GenericInput(
-              title: 'Senha',
-              controller: _passwordController,
-              textInputAction: TextInputAction.next,
-              obscure: true,
-              validator: Validators.passwordValidator,
-            ),
-            separator,
-            GenericInput(
-              title: 'Confirmar senha',
-              controller: _repeatPasswordController,
-              textInputAction: TextInputAction.next,
-              obscure: true,
-              validator: Validators.passwordValidator,
-            ),
-            separator,
-            GenericInput(
-              title: 'Data de nascimento - opcional',
-              controller: _birthDateController,
-              inputType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-              validator: Validators.dateValidator,
-              inputFormatters: <TextInputFormatter>[Masks.date()],
-              onFieldSubmitted: (String _) => _signUp(),
-            ),
-            separator,
-            GenericButton(
-              title: 'Cadastrar',
-              variant: ButtonVariant.dark,
-              onPressed: () => _signUp(),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
   void _signUp() {
-    if (_formKey.currentState.validate() || _passwordController.text == _repeatPasswordController.text) {
+    if (_formKey.currentState.validate() ||
+        _passwordController.text == _repeatPasswordController.text) {
       bloc.add(
         LoginBlocEventSignUp(
           password: _passwordController.text,

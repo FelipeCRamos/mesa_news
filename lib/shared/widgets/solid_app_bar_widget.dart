@@ -32,13 +32,14 @@ class SolidAppBar extends AppBar {
             ],
           ),
           brightness: Brightness.dark,
-          leading: IconButton(
+          leading: onCancel != null ? IconButton(
             icon: const Icon(
               Icons.close,
               color: Colors.white,
             ),
             onPressed: onCancel,
-          ),
+          ) : null,
+          automaticallyImplyLeading: false,
           centerTitle: true,
           backgroundColor: backgroundColor,
           actions: actions,

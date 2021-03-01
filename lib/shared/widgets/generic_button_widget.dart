@@ -10,12 +10,14 @@ class GenericButton extends StatelessWidget {
     this.onPressed,
     this.active = true,
     this.variant = ButtonVariant.dark,
+    this.isLoading = false,
   }) : super(key: key);
 
   final String title;
   final VoidCallback onPressed;
   final bool active;
   final ButtonVariant variant;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class GenericButton extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 13),
                   child: Align(
-                    child: Text(
+                    child: !isLoading ? Text(
                       title,
                       style: GoogleFonts.roboto(
                         color: variant == ButtonVariant.light ||
@@ -57,7 +59,7 @@ class GenericButton extends StatelessWidget {
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                       ),
-                    ),
+                    ) : const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2),),
                   ),
                 ),
                 onTap: onPressed,
